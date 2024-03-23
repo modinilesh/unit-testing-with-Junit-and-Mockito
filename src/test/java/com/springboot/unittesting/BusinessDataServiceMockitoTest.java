@@ -6,20 +6,23 @@ import static org.mockito.Mockito.when;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+
 import com.springboot.unittesting.Business.BusinessImpl;
 import com.springboot.unittesting.service.DataService;
 
+@ExtendWith(MockitoExtension.class)
 public class BusinessDataServiceMockitoTest {
 
 	// To reduce the redundant code
-	BusinessImpl business = new BusinessImpl();
-	DataService mockDataService = mock(DataService.class);
-
-	// setting data service
-	@BeforeEach
-	public void beforeTest() {
-		business.setDataService(mockDataService);
-	}
+	@InjectMocks
+	BusinessImpl business;
+	
+	@Mock //if we are using this annotation then no need to separately set the DataService to business
+	DataService mockDataService;
 
 	@Test
 	void calculateSumUsingDataService_basic() {
