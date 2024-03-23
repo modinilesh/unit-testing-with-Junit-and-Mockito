@@ -13,6 +13,7 @@ import java.util.List;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
@@ -67,6 +68,41 @@ class ListMockTest {
 		verify(mockList, atMost(2)).get(anyInt());
 		verify(mockList, never()).get(2);
 		
+	}
+	
+	//Argument Capturing - if mock is taking few arguments and we need to verify it
+	@Test
+	public void argumentCapturing() {
+		
+		//suppose mock is taking one argument
+		mockList.add("Nilesh");
+		
+		//verify that mock is calling any other method ---> yes it is calling .add method
+		ArgumentCaptor<String> captor = ArgumentCaptor.forClass(String.class);	//it will capture the argument
+		verify(mockList).add(captor.capture());
+		
+		//check added value and captured value
+		assertEquals("Nilesh", captor.getValue());
+	}
+	
+	//Multiple Argument Capturing
+	@Test
+	public void multipleArgumentCapturing() {
+		
+		//suppose mock is taking one argument
+		mockList.add("Nilesh");
+		mockList.add("Modi");
+		
+		//verify that mock is calling any other method ---> yes it is calling .add method
+		ArgumentCaptor<String> captor = ArgumentCaptor.forClass(String.class);	//it will capture the argument
+		verify(mockList, times(2)).add(captor.capture()); //two times calling add method
+		
+		//get all captured values
+		List<String> allValues = captor.getAllValues();
+		
+		//check added value and captured value
+		assertEquals("Nilesh", allValues.get(0));
+		assertEquals("Modi", allValues.get(1));
 	}
 	
 	
